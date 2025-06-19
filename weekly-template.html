@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week {{WEEK_NUMBER}} - Go Leadership</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+            background: #f5f4f0;
+        }
+        .container {
+            background: white;
+            margin: 40px 20px;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .header p {
+            margin: 10px 0 20px 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .progress-container {
+            margin: 20px 0;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: white;
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        .progress-text {
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 50px 40px;
+        }
+        .greeting {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .reflection-section {
+            background: #e8f5e8;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 4px solid #28a745;
+        }
+        .reflection-section h3 {
+            margin: 0 0 15px 0;
+            color: #1a5a1a;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .previous-action {
+            font-weight: 500;
+            color: #2d5a2d;
+            margin-bottom: 15px;
+        }
+        .encouragement {
+            color: #1a5a1a;
+            font-style: italic;
+        }
+        .action-box {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .action-box h3 {
+            margin: 0 0 20px 0;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        .action-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .connection-section {
+            background: #f5f4f0;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 4px solid #1a1a1a;
+        }
+        .connection-section h3 {
+            margin: 0 0 15px 0;
+            color: #1a1a1a;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .motivation {
+            background: #f5f4f0;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            font-style: italic;
+            color: #4a4a4a;
+        }
+        .signature {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer {
+            background: #f5f4f0;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px 10px;
+            }
+            .header, .content, .footer {
+                padding: 30px 20px;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .reflection-section, .action-box, .connection-section, .motivation {
+                margin: 20px -20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Week {{WEEK_NUMBER}}</h1>
+            <p>Building your leadership momentum</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{PROGRESS_PERCENT}}%"></div>
+                </div>
+                <div class="progress-text">
+                    Week {{WEEK_NUMBER}} of {{TOTAL_WEEKS}} • {{PROGRESS_PERCENT}}% Complete
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">
+                <p>Hi there!</p>
+                <p>Great to connect with you again this week. Let's continue building on your leadership journey.</p>
+            </div>
+            
+            {{#if PREVIOUS_ACTION}}
+            <div class="reflection-section">
+                <h3>Last Week's Progress</h3>
+                <div class="previous-action">
+                    Your focus: {{PREVIOUS_ACTION}}
+                </div>
+                <div class="encouragement">
+                    {{ENCOURAGEMENT}} on taking that step! Every action you take is building the leader you're becoming.
+                </div>
+            </div>
+            {{/if}}
+            
+            <p>This week, let's build on that momentum with your next strategic action:</p>
+            
+            <div class="action-box">
+                <h3>🎯 This Week's Action</h3>
+                <div class="action-text">
+                    {{NEW_ACTION}}
+                </div>
+            </div>
+            
+            <div class="connection-section">
+                <h3>Why This Matters</h3>
+                <p>{{GOAL_CONNECTION}}</p>
+            </div>
+            
+            <div class="motivation">
+                "You're {{WEEK_NUMBER}} weeks into your leadership transformation. Every small action compounds into significant growth. Keep up the excellent work!"
+            </div>
+            
+            <p>Remember, leadership development is a journey of consistent progress. Each week you're building skills that will serve you for years to come.</p>
+            
+            <div class="signature">
+                <p>Keep pushing forward,<br>
+                <strong>Your Go Coach</strong></p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This is week {{WEEK_NUMBER}} of your 12-week Go leadership program.</p>
+            <p style="margin-top: 15px;">
+                Need support with this week's action? Simply reply to this email – I'm here to help!<br>
+                <a href="mailto:support@go-leadership.app">support@go-leadership.app</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

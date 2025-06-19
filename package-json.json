@@ -1,0 +1,55 @@
+{
+  "name": "go-leadership-app",
+  "version": "1.0.0",
+  "description": "A 12-week leadership follow-through app that sends personalized AI-generated emails",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "setup": "node setup.js",
+    "test": "node test.js",
+    "test-email": "node -e \"require('./emailService').testEmail().then(console.log)\"",
+    "test-ai": "node -e \"require('./aiService').testAIService().then(console.log)\"",
+    "test-scheduling": "node -e \"require('./scheduler').testScheduling().then(console.log)\"",
+    "init-db": "node -e \"require('./database').initDatabase().then(() => console.log('Database initialized'))\"",
+    "send-weekly": "node -e \"require('./scheduler').processWeeklyEmails().then(() => console.log('Weekly emails processed'))\"",
+    "stats": "node -e \"require('./database').getStats().then(console.log)\"",
+    "system-check": "node test.js --check",
+    "migrate": "node migrations/migrate.js"
+  },
+  "keywords": [
+    "leadership",
+    "coaching",
+    "email",
+    "ai",
+    "development",
+    "goals"
+  ],
+  "author": "Go Leadership Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "openai": "^4.28.0",
+    "nodemailer": "^6.9.8",
+    "node-cron": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/go-leadership-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/go-leadership-app/issues"
+  },
+  "homepage": "https://github.com/yourusername/go-leadership-app#readme"
+}

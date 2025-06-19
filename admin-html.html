@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>Go Leadership Admin</h1>
+            <div class="admin-nav">
+                <button class="nav-btn active" data-tab="overview">Overview</button>
+                <button class="nav-btn" data-tab="users">Users</button>
+                <button class="nav-btn" data-tab="emails">Email Schedule</button>
+                <button class="nav-btn" data-tab="tools">Tools</button>
+            </div>
+        </header>
+
+        <main class="admin-main">
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <div class="stat-number" id="totalUsers">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Users</h3>
+                        <div class="stat-number" id="activeUsers">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Completed Program</h3>
+                        <div class="stat-number" id="completedUsers">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Emails Sent</h3>
+                        <div class="stat-number" id="totalEmails">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>New This Week</h3>
+                        <div class="stat-number" id="recentSignups">-</div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h2>Recent Activity</h2>
+                    <div id="recentActivity" class="activity-list">
+                        <p class="loading">Loading recent activity...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users" class="tab-content">
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2>User Management</h2>
+                        <button class="refresh-btn" onclick="loadUsers()">🔄 Refresh</button>
+                    </div>
+                    
+                    <div class="users-table-container">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>Week</th>
+                                    <th>Signup Date</th>
+                                    <th>Last Email</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr><td colspan="7" class="loading">Loading users...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Schedule Tab -->
+            <div id="emails" class="tab-content">
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2>Email Schedule</h2>
+                        <button class="refresh-btn" onclick="loadEmailSchedule()">🔄 Refresh</button>
+                    </div>
+                    
+                    <div id="emailSchedule" class="schedule-list">
+                        <p class="loading">Loading email schedule...</p>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h2>Users Needing Emails Soon</h2>
+                    <div id="usersNeedingEmails" class="urgent-list">
+                        <p class="loading">Loading urgent users...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools Tab -->
+            <div id="tools" class="tab-content">
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <h3>🧪 Test Email</h3>
+                        <p>Send a test email to verify the system is working</p>
+                        <input type="email" id="testEmail" placeholder="test@example.com">
+                        <button onclick="testEmail()">Send Test Email</button>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>📧 Send Weekly Emails</h3>
+                        <p>Manually trigger the weekly email process</p>
+                        <button onclick="sendWeeklyEmails()" class="danger-btn">Send All Weekly Emails</button>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>🤖 Test AI Service</h3>
+                        <p>Verify AI content generation is working</p>
+                        <button onclick="testAI()">Test AI Service</button>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>⏰ Test Scheduling</h3>
+                        <p>Check scheduling logic and timezone handling</p>
+                        <button onclick="testScheduling()">Test Scheduling Logic</button>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>📊 Database Status</h3>
+                        <p>Check database connection and integrity</p>
+                        <button onclick="testDatabase()">Test Database</button>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>💔 System Health</h3>
+                        <p>Overall system health check</p>
+                        <button onclick="checkHealth()">Check Health</button>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h2>System Logs</h2>
+                    <div id="systemLogs" class="logs-container">
+                        <p>System logs will appear here when actions are performed.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal for user details -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>User Details</h2>
+                <div id="userDetails"></div>
+            </div>
+        </div>
+
+        <!-- Toast notifications -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script>
+        // Admin dashboard functionality
+        let currentTab = 'overview';
+
+        // Tab switching
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.dataset.tab;
+                switchTab(tabName);
+            });
+        });
+
+        function switchTab(tabName) {
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+
+            currentTab = tabName;
+
+            // Load data for the current tab
+            loadTabData(tabName);
+        }
+
+        // Load data based on current tab
+        function loadTabData(tabName) {
+            switch(tabName) {
+                case 'overview':
+                    loadStats();
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
+                case 'emails':
+                    loadEmailSchedule();
+                    break;
+            }
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('totalUsers').textContent = data.stats.totalUsers;
+                    document.getElementById('activeUsers').textContent = data.stats.activeUsers;
+                    document.getElementById('completedUsers').textContent = data.stats.completedUsers;
+                    document.getElementById('totalEmails').textContent = data.stats.totalEmails;
+                    document.getElementById('recentSignups').textContent = data.stats.recentSignups;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                showToast('Error loading statistics', 'error');
+            }
+        }
+
+        // Load users
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/users');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const tbody = document.getElementById('usersTableBody');
+                    tbody.innerHTML = '';
+                    
+                    data.users.forEach(user => {
+                        const row = createUserRow(user);
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showToast('Error loading users', 'error');
+            }
+        }
+
+        // Create user table row
+        function createUserRow(user) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.email}</td>
+                <td>${user.current_week}/12</td>
+                <td>${new Date(user.signup_date).toLocaleDateString()}</td>
+                <td>${user.last_email_sent ? new Date(user.last_email_sent).toLocaleDateString() : 'Never'}</td>
+                <td>
+                    <span class="status ${user.is_active ? 'active' : 'inactive'}">
+                        ${user.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                </td>
+                <td class="actions">
+                    <button onclick="sendManualEmail(${user.id})" class="btn-small">Send Email</button>
+                    <button onclick="viewUser(${user.id})" class="btn-small">View</button>
+                    <button onclick="toggleUserStatus(${user.id}, ${!user.is_active})" class="btn-small">
+                        ${user.is_active ? 'Deactivate' : 'Activate'}
+                    </button>
+                </td>
+            `;
+            return row;
+        }
+
+        // Load email schedule
+        async function loadEmailSchedule() {
+            try {
+                const response = await fetch('/api/upcoming-emails');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const container = document.getElementById('emailSchedule');
+                    container.innerHTML = '';
+                    
+                    data.upcoming.forEach(email => {
+                        const item = document.createElement('div');
+                        item.className = 'schedule-item';
+                        item.innerHTML = `
+                            <div class="schedule-info">
+                                <strong>${email.email}</strong> - Week ${email.currentWeek + 1}
+                                <br><small>Next email: ${new Date(email.nextEmailTime).toLocaleString()}</small>
+                            </div>
+                            <div class="schedule-actions">
+                                <button onclick="sendManualEmail(${email.userId})" class="btn-small">Send Now</button>
+                            </div>
+                        `;
+                        container.appendChild(item);
+                    });
+                }
+
+                // Load users needing emails
+                const needingResponse = await fetch('/api/users-needing-emails');
+                const needingData = await needingResponse.json();
+                
+                if (needingData.success) {
+                    const container = document.getElementById('usersNeedingEmails');
+                    container.innerHTML = '';
+                    
+                    needingData.users.slice(0, 10).forEach(user => {
+                        const item = document.createElement('div');
+                        item.className = 'urgent-item';
+                        item.innerHTML = `
+                            <strong>${user.email}</strong> - Week ${user.current_week}
+                            <br><small>Due: ${user.next_email_due}</small>
+                        `;
+                        container.appendChild(item);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading email schedule:', error);
+                showToast('Error loading email schedule', 'error');
+            }
+        }
+
+        // Tool functions
+        async function testEmail() {
+            const email = document.getElementById('testEmail').value || 'test@example.com';
+            try {
+                const response = await fetch('/api/test-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                logAction(`Test email sent to ${email}: ${data.message}`);
+            } catch (error) {
+                showToast('Error sending test email', 'error');
+            }
+        }
+
+        async function sendWeeklyEmails() {
+            if (!confirm('Are you sure you want to manually trigger weekly emails? This will send emails to all eligible users.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/cron/weekly-emails', { method: 'POST' });
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                logAction(`Manual weekly email trigger: ${data.message}`);
+            } catch (error) {
+                showToast('Error sending weekly emails', 'error');
+            }
+        }
+
+        async function testAI() {
+            try {
+                const response = await fetch('/test/ai', { method: 'POST' });
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                logAction(`AI service test: ${data.message}`);
+            } catch (error) {
+                showToast('Error testing AI service', 'error');
+            }
+        }
+
+        async function testScheduling() {
+            try {
+                const response = await fetch('/test/scheduling', { method: 'POST' });
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                logAction(`Scheduling test: ${data.message}`);
+            } catch (error) {
+                showToast('Error testing scheduling', 'error');
+            }
+        }
+
+        async function testDatabase() {
+            try {
+                const response = await fetch('/test/database');
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                logAction(`Database test: ${data.message}`);
+            } catch (error) {
+                showToast('Error testing database', 'error');
+            }
+        }
+
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                showToast(`System healthy - ${data.timestamp}`, 'success');
+                logAction(`Health check: ${data.status}`);
+            } catch (error) {
+                showToast('System health check failed', 'error');
+            }
+        }
+
+        // User management functions
+        async function sendManualEmail(userId) {
+            try {
+                const response = await fetch(`/api/send-email/${userId}`, { method: 'POST' });
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                logAction(`Manual email sent to user ${userId}: ${data.message}`);
+            } catch (error) {
+                showToast('Error sending manual email', 'error');
+            }
+        }
+
+        async function toggleUserStatus(userId, newStatus) {
+            try {
+                const response = await fetch(`/api/user/${userId}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ isActive: newStatus })
+                });
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                if (data.success) {
+                    loadUsers(); // Refresh the users table
+                }
+            } catch (error) {
+                showToast('Error updating user status', 'error');
+            }
+        }
+
+        async function viewUser(userId) {
+            try {
+                const response = await fetch(`/api/user/${userId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const modal = document.getElementById('userModal');
+                    const details = document.getElementById('userDetails');
+                    
+                    details.innerHTML = `
+                        <p><strong>Email:</strong> ${data.user.email}</p>
+                        <p><strong>Goals:</strong> ${data.user.goals}</p>
+                        <p><strong>Current Week:</strong> ${data.user.current_week}/12</p>
+                        <p><strong>Timezone:</strong> ${data.user.timezone}</p>
+                        <p><strong>Signup Date:</strong> ${new Date(data.user.signup_date).toLocaleString()}</p>
+                        <p><strong>Last Email:</strong> ${data.user.last_email_sent ? new Date(data.user.last_email_sent).toLocaleString() : 'Never'}</p>
+                        <p><strong>Status:</strong> ${data.user.is_active ? 'Active' : 'Inactive'}</p>
+                        
+                        <div class="user-actions">
+                            <button onclick="sendManualEmail(${data.user.id})">Send Email Now</button>
+                            <button onclick="resetUserProgress(${data.user.id})" class="danger-btn">Reset Progress</button>
+                        </div>
+                    `;
+                    
+                    modal.style.display = 'block';
+                }
+            } catch (error) {
+                showToast('Error loading user details', 'error');
+            }
+        }
+
+        async function resetUserProgress(userId) {
+            if (!confirm('Are you sure you want to reset this user\'s progress? They will start from week 0.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/user/${userId}/reset`, { method: 'POST' });
+                const data = await response.json();
+                showToast(data.message, data.success ? 'success' : 'error');
+                if (data.success) {
+                    document.getElementById('userModal').style.display = 'none';
+                    loadUsers();
+                }
+            } catch (error) {
+                showToast('Error resetting user progress', 'error');
+            }
+        }
+
+        // Utility functions
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function logAction(message) {
+            const logs = document.getElementById('systemLogs');
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `<span class="timestamp">${new Date().toLocaleTimeString()}</span> ${message}`;
+            logs.insertBefore(logEntry, logs.firstChild);
+            
+            // Keep only last 50 log entries
+            while (logs.children.length > 50) {
+                logs.removeChild(logs.lastChild);
+            }
+        }
+
+        // Modal handling
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('userModal').style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('userModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTabData('overview');
+            
+            // Auto-refresh every 30 seconds
+            setInterval(() => {
+                if (currentTab === 'overview') {
+                    loadStats();
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
