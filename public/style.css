@@ -1,0 +1,515 @@
+/* Base styles - IDEO inspired design */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: #f5f4f0;
+    font-weight: 400;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* Navigation */
+.nav {
+    background: #f5f4f0;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: #666;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #1a1a1a;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Main content */
+.main {
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.hero {
+    padding: 100px 0 120px;
+    background: #f5f4f0;
+}
+
+.hero-content {
+    max-width: 900px;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 40px;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+}
+
+.highlight {
+    display: block;
+    margin-top: 10px;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #4a4a4a;
+    margin-bottom: 40px;
+    max-width: 800px;
+}
+
+.hero-tagline {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    max-width: 600px;
+}
+
+/* Signup Section */
+.signup-section {
+    background: white;
+    padding: 100px 0;
+}
+
+.signup-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.signup-intro h2 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+}
+
+.signup-intro p {
+    font-size: 1.1rem;
+    color: #4a4a4a;
+    line-height: 1.6;
+}
+
+.signup-form-container {
+    background: #f5f4f0;
+    padding: 60px;
+    border-radius: 0;
+}
+
+/* Form Styles */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 20px;
+    border: 1px solid #d0d0d0;
+    border-radius: 0;
+    font-size: 16px;
+    font-family: inherit;
+    background: white;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #1a1a1a;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+}
+
+.form-group small {
+    margin-top: 10px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Buttons */
+.cta-button {
+    background: #1a1a1a;
+    color: white;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.cta-button:hover {
+    background: #333;
+    transform: translateY(-1px);
+}
+
+.cta-button:disabled {
+    opacity: 0.6;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* Message styles */
+.message {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 0;
+    font-weight: 500;
+}
+
+.message.success {
+    background: #e8f5e8;
+    color: #2d5a2d;
+    border: 1px solid #c3e6c3;
+}
+
+.message.error {
+    background: #fdf2f2;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Services Section */
+.services {
+    background: #f5f4f0;
+    padding: 120px 0;
+}
+
+.services-intro {
+    margin-bottom: 80px;
+}
+
+.services-intro h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.3;
+    color: #1a1a1a;
+    max-width: 900px;
+    letter-spacing: -0.02em;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 60px;
+}
+
+.service-item {
+    padding: 0;
+}
+
+.service-divider {
+    width: 60px;
+    height: 3px;
+    background: #1a1a1a;
+    margin-bottom: 30px;
+}
+
+.service-item h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+    line-height: 1.3;
+}
+
+.service-item p {
+    color: #4a4a4a;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* How it works */
+.how-it-works {
+    background: white;
+    padding: 120px 0;
+}
+
+.how-it-works h2 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 80px;
+    color: #1a1a1a;
+    text-align: center;
+    letter-spacing: -0.02em;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 60px;
+}
+
+.step {
+    text-align: left;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: #1a1a1a;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.step-content h3 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.step-content p {
+    color: #4a4a4a;
+    line-height: 1.6;
+}
+
+/* Footer */
+.footer {
+    background: #1a1a1a;
+    color: white;
+    padding: 60px 0;
+}
+
+.footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.footer p {
+    margin: 0;
+    opacity: 0.8;
+}
+
+.footer-notice {
+    text-align: right;
+    max-width: 400px;
+}
+
+.footer-notice p {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    color: white;
+    text-decoration: underline;
+}
+
+.footer a:hover {
+    opacity: 0.8;
+}
+
+/* Form Validation Styles */
+.form-group input.error,
+.form-group textarea.error {
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 0.2rem rgba(211, 47, 47, 0.25);
+}
+
+.field-error {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.char-counter {
+    font-size: 12px;
+    margin-top: 8px;
+    text-align: right;
+    font-weight: 500;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    box-shadow: 0 0 0 0.2rem rgba(26, 26, 26, 0.25);
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    .nav-container {
+        padding: 0 20px;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .nav-links {
+        gap: 20px;
+    }
+    
+    .hero {
+        padding: 60px 0 80px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .signup-section {
+        padding: 60px 0;
+    }
+    
+    .signup-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .signup-form-container {
+        padding: 40px 30px;
+    }
+    
+    .signup-intro h2 {
+        font-size: 2rem;
+    }
+    
+    .services {
+        padding: 80px 0;
+    }
+    
+    .services-intro h2 {
+        font-size: 1.8rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .how-it-works {
+        padding: 80px 0;
+    }
+    
+    .how-it-works h2 {
+        font-size: 2rem;
+    }
+    
+    .steps {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .footer .container {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .footer-notice {
+        text-align: center;
+    }
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Go! Check Your Email</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="success-page">
+            <div class="success-content">
+                <div class="success-icon">✅</div>
+                <h1>Welcome to Your Leadership Journey!</h1>
+                
+                <div class="success-message">
+                    <h2>You're all set! Here's what happens next:</h2>
+                    
+                    <div class="next-steps">
+                        <div class="step">
+                            <div class="step-icon">📧</div>
+                            <div class="step-content">
+                                <h3>Check Your Email Now</h3>
+                                <p>We've analyzed your goals and sent your personalized feedback plus your first action item. It should arrive within the next few minutes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-icon">📅</div>
+                            <div class="step-content">
+                                <h3>Weekly Emails Every Monday</h3>
+                                <p>Starting next Monday at 9 AM (your local time), you'll receive a new personalized action item each week.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-icon">🎯</div>
+                            <div class="step-content">
+                                <h3>Take Action & Transform</h3>
+                                <p>Each week's action builds on the previous one, creating a comprehensive 12-week leadership development program.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips">
+                    <h3>💡 Pro Tips for Success:</h3>
+                    <ul>
+                        <li><strong>Add us to your contacts:</strong> Make sure coach@go-leadership.app doesn't go to spam</li>
+                        <li><strong>Schedule action time:</strong> Block 30-60 minutes each week to complete your action item</li>
+                        <li><strong>Track your progress:</strong> Keep notes on what you learn and how you grow</li>
+                        <li><strong>Stay consistent:</strong> Small weekly actions create big transformations</li>
+                    </ul>
+                </div>
+                
+                <div class="cta-section">
+                    <p class="countdown-text">Your leadership transformation starts <strong>right now</strong>!</p>
+                    <a href="/" class="secondary-button">← Back to Home</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Go Leadership. Transform your potential into performance.</p>
+            <p>Questions? Email us at <a href="mailto:support@go-leadership.app">support@go-leadership.app</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        // Check if user came from successful signup
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email');
+        
+        if (email) {
+            // Personalize the message
+            const personalMessage = document.createElement('p');
+            personalMessage.innerHTML = `<strong>Welcome, ${email}!</strong> Your journey is about to begin.`;
+            personalMessage.className = 'personal-welcome';
+            document.querySelector('.success-message').prepend(personalMessage);
+        }
+        
+        // Auto-refresh email check reminder
+        setTimeout(() => {
+            const reminderDiv = document.createElement('div');
+            reminderDiv.className = 'email-reminder';
+            reminderDiv.innerHTML = `
+                <div class="reminder-content">
+                    <h4>📬 Don't see your welcome email?</h4>
+                    <p>Check your spam folder and add coach@go-leadership.app to your contacts.</p>
+                    <small>Email delivery can take up to 5 minutes.</small>
+                </div>
+            `;
+            document.querySelector('.success-content').appendChild(reminderDiv);
+        }, 30000); // Show after 30 seconds
+    </script>
+</body>
+</html>
